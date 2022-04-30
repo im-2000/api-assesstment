@@ -1,7 +1,7 @@
 const { Router } = require("express");
 const router = new Router();
 const Team = require("../models").team;
-const Player = require("../models/player");
+const Player = require("../models").player;
 
 // ❗ Feature 4 - Write a few routes
 // GET all teams localhost:4000/teams
@@ -17,18 +17,18 @@ router.get("/", async (req, res, next) => {
 
 // ❗ Feature 4 - Write a few routes. GET a specific team, including all its players localhost:4000/teams/:id
 
-router.get("/:id", async (request, response, next) => {
+router.get("/:id", async (req, res, next) => {
   try {
-    const id = request.params.id;
-    const specificTeam = await Team.findByPk(id, { include: Player });
-
-    if (!specificTeam) {
-      response.status(404).send("No users");
+    const id = parseInt(req.params.id);
+    const specificTeam = await Team.findByPk(id, {
+      include: Player,
+    });
+    if (specificTeam) {
+      res.send(specificTeam);
     } else {
-      response.send(specificTeam);
+      res.status(404).send("User not found");
     }
   } catch (e) {
-    console.log(e.message);
     next(e);
   }
 });

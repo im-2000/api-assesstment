@@ -21,26 +21,6 @@ router.post("/signup", async (req, res, next) => {
       const newUser = await User.create({
         name,
         email,
-        password,
-      });
-      res.send(newUser);
-    }
-  } catch (e) {
-    next(e);
-  }
-});
-
-// HASHING PASSWORD WITH BCRYPT
-
-router.post("/signup", async (req, res, next) => {
-  try {
-    const { name, email, password } = req.body;
-    if (!name || !email || !password) {
-      res.status(400).send("missing parameters");
-    } else {
-      const newUser = await User.create({
-        name,
-        email,
         password: bcrypt.hashSync(password, 10),
       });
       res.send(newUser);
