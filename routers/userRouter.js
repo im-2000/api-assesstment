@@ -7,7 +7,7 @@ const User = require("../models").user;
 POST the user info (name, email, password) to localhost:4000/users/signup to create a new user. 
 Creating a user is only possible if name,email, and password is provided, and password is at least 6 characters long */
 
-router.post("/", async (req, res, next) => {
+router.post("/signup", async (req, res, next) => {
   try {
     const { name, email, password } = req.body;
     if (!name || !email || !password || password.length < 6) {
