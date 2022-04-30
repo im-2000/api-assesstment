@@ -3,6 +3,7 @@ const express = require("express");
 const UserRouter = require("./routers/userRouter");
 const TeamRouter = require("./routers/teamRouter");
 const PlayerRouter = require("./routers/playerRouter");
+const AuthRouter = require("./routers/authRouter");
 
 const PORT = process.env.PORT || 4000;
 
@@ -12,5 +13,6 @@ app.use(express.json());
 app.use("/users", UserRouter);
 app.use("/teams", TeamRouter);
 app.use("/players", PlayerRouter);
+app.use("/auth", AuthRouter);
 
 app.listen(PORT, () => console.log(`Server started in port: ${PORT}`));
