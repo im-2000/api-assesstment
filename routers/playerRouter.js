@@ -3,18 +3,7 @@ const router = new Router();
 const Player = require("../models").player;
 // const bcrypt = require("bcrypt");
 
-// GET ALL PLAYERS
-
-router.get("/", async (req, res, next) => {
-  try {
-    res.send(await Player.findAll());
-  } catch (e) {
-    console.log(e);
-    next(e);
-  }
-});
-
-// CREATE NEW PLAYER
+// POST create a new player
 
 router.post("/", async (request, response, next) => {
   try {
