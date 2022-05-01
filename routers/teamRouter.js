@@ -1,10 +1,10 @@
 const { Router } = require("express");
-const router = new Router();
 const Team = require("../models").team;
 const Player = require("../models").player;
 
-// ❗ Feature 4 - Write a few routes
-// GET all teams localhost:4000/teams
+const router = new Router();
+
+// ❗ Feature 4.1 - GET all teams localhost:4000/teams
 
 router.get("/", async (req, res, next) => {
   try {
@@ -15,7 +15,7 @@ router.get("/", async (req, res, next) => {
   }
 });
 
-// ❗ Feature 4 - Write a few routes. GET a specific team, including all its players localhost:4000/teams/:id
+// ❗ Feature 4.3 - GET a specific team, including all its players localhost:4000/teams/:id
 
 router.get("/:id", async (req, res, next) => {
   try {
@@ -33,9 +33,9 @@ router.get("/:id", async (req, res, next) => {
   }
 });
 
-// ❗ Feature 4 - Write a few routes. PUT update number of titles of a specific team localhost:4000/teams/:id
+// ❗ Feature 4.4 - PUT update number of titles of a specific team localhost:4000/teams/:id
 
-router.patch("/:id", async (request, response, next) => {
+router.put("/:id", async (request, response, next) => {
   try {
     const { titles } = request.body;
     const { id } = request.params;

@@ -5,8 +5,8 @@ const bcrypt = require("bcrypt");
 
 const router = new Router();
 
-// //  ❗ Bonus 4 - User login. Use jsonwebtoken package and the auth/jwt.js file
-// //     POST user credentials to login (email, password)
+/*❗ Bonus 4 - User login. Use jsonwebtoken package and the auth/jwt.js file. 
+    POST user credentials to login (email, password) */
 
 router.post("/login", async (req, res, next) => {
   try {

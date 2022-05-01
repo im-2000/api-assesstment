@@ -6,7 +6,7 @@ const router = new Router();
 
 /* ❗ Bonus 3 - Create User
 POST the user info (name, email, password) to localhost:4000/users/signup to create a new user.
-Creating a user is only possible if name,email, and password is provided, and password is at least 6 characters long */
+Creating a user is only possible if name,email and password is provided, and password is at least 6 characters long */
 
 router.post("/signup", async (req, res, next) => {
   try {
