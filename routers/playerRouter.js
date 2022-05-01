@@ -5,38 +5,29 @@ const Team = require("../models").team;
 const Middleware = require("../auth/middleware");
 const { Op } = require("sequelize");
 
-// ❗ Feature 4.2 - POST create a new player localhost:4000/players
+/* ❗ Feature 4.2 - POST create a new player localhost:4000/players
+                    +
+    ❗ Bonus 1 - Validate POST player route
+    Creating a new player (POST - /players) shouldn't be possible if the client does not provide name, age, and teamId, 
+    we also want to check if a team with the teamId provided exists. The endpoint should respond with an appropriate 
+    message and status code. */
 
-router.post("/", async (request, response, next) => {
-  try {
-    const { name, age, teamId } = request.body;
-    const newPlayer = await Player.create({ name, age, teamId });
-
-    response.send(newPlayer);
-  } catch (error) {
-    console.log(error);
-    next(error);
-  }
-});
-
-/* ❗ Bonus 1 - Validate POST player route
-Creating a new player (POST - /players) shouldn't be possible if the client does not provide name, age, and teamId, 
-we also want to check if a team with the teamId provided exists. The endpoint should respond with an appropriate 
-message and status code. */
-
-router.post("/newplayer", async (req, res, next) => {
+router.post("/", async (req, res, next) => {
   try {
     const { name, age, teamId } = req.body;
-
+    const team = await Team.findByPk(teamId);
     if (!name || !age || !teamId) {
       res.status(400).send("missing parameters");
-    } else {
+    }
+    if (team) {
       const newPlayer = await Player.create({
         name,
         age,
         teamId,
       });
       res.send(newPlayer);
+    } else {
+      console.log(`Team with this id: ${teamId} doesn't exist`);
     }
   } catch (e) {
     next(e);
