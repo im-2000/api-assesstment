@@ -3,6 +3,7 @@ const router = new Router();
 const Player = require("../models").player;
 const Team = require("../models").team;
 const Middleware = require("../auth/middleware");
+const { Op } = require("sequelize");
 
 // ❗ Feature 4.2 - POST create a new player localhost:4000/players
 
@@ -12,30 +13,6 @@ router.post("/", async (request, response, next) => {
     const newPlayer = await Player.create({ name, age, teamId });
 
     response.send(newPlayer);
-  } catch (error) {
-    console.log(error);
-    next(error);
-  }
-});
-
-/* ❗ Bonus 5 - Delete a specific player
-DELETE a specific player by id, this route is protected by your authorization middleware */
-
-router.delete("/:id", Middleware, async (request, response, next) => {
-  try {
-    const { id } = request.params;
-
-    const player = await Player.findByPk(id);
-
-    if (!player) {
-      return response.status(404).send("Sorry, no user with that id");
-    }
-
-    const destroyedPlayer = player.destroy();
-
-    response.send({
-      message: "User terminated",
-    });
   } catch (error) {
     console.log(error);
     next(error);
@@ -63,6 +40,54 @@ router.post("/newplayer", async (req, res, next) => {
     }
   } catch (e) {
     next(e);
+  }
+});
+
+/* ❗ Bonus 2 - Get players above :age years old
+- Going to `localhost:4000/players/:age` returns an array players older than the provided age. 
+_Tip_: You're going to need query params for this */
+
+router.get("/:age", async (req, res, next) => {
+  try {
+    const age = parseInt(req.params.age);
+    const olderPlayers = await Player.findAll({
+      where: {
+        age: {
+          [Op.gt]: age,
+        },
+      },
+    });
+    if (olderPlayers) {
+      res.send(olderPlayers);
+    } else {
+      res.status(404).send("Players not found");
+    }
+  } catch (e) {
+    next(e);
+  }
+});
+
+/* ❗ Bonus 5 - Delete a specific player
+DELETE a specific player by id, this route is protected by your authorization middleware */
+
+router.delete("/:id", Middleware, async (request, response, next) => {
+  try {
+    const { id } = request.params;
+
+    const player = await Player.findByPk(id);
+
+    if (!player) {
+      return response.status(404).send("Sorry, no user with that id");
+    }
+
+    const destroyedPlayer = player.destroy();
+
+    response.send({
+      message: "User terminated",
+    });
+  } catch (error) {
+    console.log(error);
+    next(error);
   }
 });
 
